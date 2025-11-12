@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!-- Langue par défaut : Anglais -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Le titre sera défini par JS -->
+    <title data-lang-key="pageTitle">Lilian Benard | Gameplay Programmer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- === CANVAS POUR LES ÉTOILES === -->
+    <canvas id="starfield"></canvas>
+    <!-- ============================= -->
+
+    <!-- 1. BARRE DE NAVIGATION -->
+    <header>
+        <nav class="container">
+            <!-- Section gauche de la navigation -->
+            <div class="nav-left">
+                <button id="lang-toggle" data-lang-key="langToggleTitle" title="Switch to French">FR</button>
+                <div class="logo" data-lang-key="logo">Lilian Benard</div>
+            </div>
+            
+            <!-- Section droite de la navigation -->
+            <div class="nav-right">
+                <ul>
+                    <li><a href="#hero" data-lang-key="navHome">Home</a></li>
+                    <li><a href="#about" data-lang-key="navAbout">About</a></li>
+                    <li><a href="#projects" data-lang-key="navProjects">Projects</a></li>
+                    <li><a href="#contact" data-lang-key="navContact">Contact</a></li>
+                </ul>
+                <!-- === BOUTON THÈME (ICÔNE) === -->
+                <!-- data-lang-key="themeToggleTitle" SUPPRIMÉ -->
+                <button id="theme-toggle-button" class="theme-toggle-button" title="Change theme"> 
+                    <!-- L'icône SVG sera insérée ici par JS -->
+                    <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                    <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun" style="display: none;"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                </button>
+                <!-- ========================== -->
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- 2. SECTION HÉROS -->
+        <section id="hero">
+            
+            <video autoplay muted loop id="hero-video">
+                <source src="video/The Last Haven.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay"></div> 
+
+            <div class="hero-content">
+                <h1 data-lang-key="heroName">Lilian Benard</h1>
+                <h2 data-lang-key="heroTitle">Gameplay Programmer</h2>
+                <p data-lang-key="heroSubtitle">2nd year student at ISART Digital</p>
+                
+                <a href="#projects" class="btn" data-lang-key="heroButton">View my Projects</a>
+                <div class="social-links">
+                    <a href="[Lien GitHub]" target="_blank" title="GitHub">GitHub</a>
+                    <!-- === MODIFICATION ICI === -->
+                    <a href="https://linkedin.com/in/lilian-benard-150355386" target="_blank" title="LinkedIn">LinkedIn</a>
+                    <!-- ======================= -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. SECTION À PROPOS -->
+        <section id="about" class="container">
+            <h2 data-lang-key="aboutTitle">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <div class="about-highlight">
+                        <p>
+                            Dans le cadre de ma seconde année en game design et programing, je suis chaque jour un peu plus séduit par l’idée de partager de faire voyager tout un chacun dans différents univers depuis son canapé. J’ai notamment été touché par les univers de jeux comme Chants of Sennaar qui mettent un point d’honneur sur leur côté poétique.
+                        </p>
+                        <p>
+                            Mon souhait le plus cher consiste à concevoir des mécaniques remarquables, à dénicher les mots justes pour donner lieu à l’émotion, à bâtir des systèmes mémorables. Je crois que narration, émotion et gameplay peuvent dès lors servir de fondements à une même histoire à condition d’en faire bon usage.
+                        </p>
+                        <p>
+                            Mon souhait serait de donner vie à des expériences s’afficheraient comme de véritables invitations à explorer, réfléchir, éprouver – mais surtout à se soustraire un moment au temps.
+                        </p>
+                    </div>
+                    <a href="[Lien vers votre CV.pdf]" class="btn" target="_blank" data-lang-key="aboutButton">Download my CV</a>
+                </div>
+                <div class="about-skills">
+                    <h3 data-lang-key="aboutSkillsTitle">Technical Skills</h3>
+                    <div class="skills-category">
+                        <h4 data-lang-key="aboutSkillsLang">Languages</h4>
+                        <ul>
+                            <li>C#</li>
+                        </ul>
+                    </div>
+                    <div class="skills-category">
+                        <h4 data-lang-key="aboutSkillsEngines">Engines</h4>
+                        <ul>
+                            <li>Unity</li>
+                            <li>Godot</li>
+                        </ul>
+                    </div>
+                    <div class="skills-category">
+                        <h4 data-lang-key="aboutSkillsTools">Tools</h4>
+                        <ul>
+                            <li>Git</li>
+                            <li>Visual Studio</li>
+                            <li>Blender</li>
+                            <li>Photoshop</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SECTION PROJETS -->
+        <section id="projects">
+            <div class="container">
+                <h2 data-lang-key="projectsTitle">Projects</h2>
+                <div class="project-filters">
+                    <span class="project-filters__label" data-lang-key="filterTitle">Filter by tag:</span>
+                    <div class="project-filters__buttons" id="project-filters">
+                        <button class="filter-btn active" data-filter="all" data-lang-key="filterAll">All Projects</button>
+                        <button class="filter-btn" data-filter="godot" data-lang-key="filterTagGodot">Godot</button>
+                        <button class="filter-btn" data-filter="unity" data-lang-key="filterTagUnity">Unity</button>
+                        <button class="filter-btn" data-filter="csharp" data-lang-key="filterTagCsharp">C#</button>
+                        <button class="filter-btn" data-filter="puzzle" data-lang-key="filterTagPuzzle">Puzzle</button>
+                        <button class="filter-btn" data-filter="sokoban" data-lang-key="filterTagSokoban">Sokoban</button>
+                        <button class="filter-btn" data-filter="visual-novel" data-lang-key="filterTagVisualNovel">Visual Novel</button>
+                        <button class="filter-btn" data-filter="tools" data-lang-key="filterTagTools">Tools</button>
+                    </div>
+                </div>
+
+                <div class="project-grid">
+
+                    <!-- Projet 1 -->
+                    <div class="project-card" data-project-id="1" data-tags="godot,csharp,puzzle,sokoban">
+                        <div class="project-card-inner">
+                            <div class="project-card-front">
+                                <img src="Kinisi.png" alt="Visuel du Projet 1" onerror="this.onerror=null; this.src='https://placehold.co/400x250/374151/FFFFFF?text=Kinisi+Error'">
+                                <div class="project-card-content">
+                                    <h3 data-lang-key="project1Title">Kinisi</h3>
+                                    <p class="project-context" data-lang-key="project1Context">Student Project (2 months)</p>
+                                    <div class="project-tags">
+                                        <span class="tag godot">Godot</span>
+                                        <span class="tag csharp">C#</span>
+                                        <span class="tag puzzle">Puzzle</span>
+                                        <span class="tag sokoban">Sokoban</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="project-card-back">
+                                <h3 class="back-title" data-lang-key="project1Title">Kinisi</h3>
+                                <p class="back-subtitle" data-lang-key="project1Subtitle">An innovative Sokoban with unique object mechanics.</p>
+                                <div class="back-tech-stack" data-lang-key="project1TechStack">
+                                    <!-- Tags insérés par JS -->
+                                </div>
+                                <button class="btn-project-back" data-project-id="1" data-lang-key="projectButtonBack">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Projet 2 -->
+                    <div class="project-card" data-project-id="2" data-tags="godot,csharp,visual-novel">
+                        <div class="project-card-inner">
+                            <div class="project-card-front">
+                                <img src="TheLastHaven.png" alt="Visuel du Projet 2" onerror="this.onerror=null; this.src='https://placehold.co/400x250/374151/FFFFFF?text=Image+2+Error'">
+                                <div class="project-card-content"> 
+                                    <h3 data-lang-key="project2Title">The Last Haven</h3>
+                                    <p class="project-context" data-lang-key="project2Context">Project for The Red Cross (72H)</p>
+                                    <div class="project-tags">
+                                        <span class="tag godot">Godot</span>
+                                        <span class="tag csharp">C#</span>
+                                        <span class="tag visual-novel">Visual Novel</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="project-card-back">
+                                <h3 class="back-title" data-lang-key="project2Title">The Last Haven</h3>
+                                <p class="back-subtitle" data-lang-key="project2Subtitle">A humanitarian Visual Novel for The Red Cross.</p>
+                                <div class="back-tech-stack" data-lang-key="project2TechStack">
+                                    <!-- Tags insérés par JS -->
+                                </div>
+                                <button class="btn-project-back" data-project-id="2" data-lang-key="projectButtonBack">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- === PROJET 3 === -->
+                    <div class="project-card" data-project-id="3" data-tags="unity,csharp,tools">
+                        <div class="project-card-inner">
+                            <div class="project-card-front">
+                                <img src="FoodWise.png" alt="Visuel du Projet 3" onerror="this.onerror=null; this.src='https://placehold.co/400x250/374151/FFFFFF?text=Image+3+Error'">
+                                <div class="project-card-content">
+                                     <!-- === MODIFICATION ICI === -->
+                                    <h3 data-lang-key="project3Title">food wise</h3>
+                                    <p class="project-context" data-lang-key="project3Context">One button game éducatif sur mobile</p>
+                                     <!-- ======================= -->
+                                    <div class="project-tags">
+                                        <span class="tag unity">Unity</span>
+                                        <span class="tag csharp">C#</span>
+                                        <span class="tag tools">Tools</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="project-card-back">
+                                <!-- === MODIFICATION ICI === -->
+                                <h3 class="back-title" data-lang-key="project3Title">food wise</h3>
+                                <p class="back-subtitle" data-lang-key="project3Subtitle">Educational one-button mobile game</p>
+                                 <!-- ======================= -->
+                                <div class="back-tech-stack" data-lang-key="project3TechStack">
+                                    <!-- Tags insérés par JS -->
+                                </div>
+                                <button class="btn-project-back" data-project-id="3" data-lang-key="projectButtonBack">Learn More</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ======================= -->
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. SECTION CONTACT -->
+        <section id="contact" class="container">
+            <h2 data-lang-key="contactTitle">Contact</h2>
+            <p data-lang-key="contactP">I'm currently looking for an internship. Feel free to contact me!</p>
+            
+            <!-- === FORMULAIRE DE CONTACT === -->
+            <form id="contact-form" action="https://formspree.io/f/mgvpooae" method="POST">
+                <div class="form-group">
+                    <label for="name" data-lang-key="formNameLabel">Name</label>
+                    <input type="text" id="name" name="name" required data-lang-key="formNamePlaceholder" placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="email" data-lang-key="formEmailLabel">Email</label>
+                    <input type="email" id="email" name="email" required data-lang-key="formEmailPlaceholder" placeholder="Your Email">
+                </div>
+                <div class="form-group">
+                    <label for="subject" data-lang-key="formSubjectLabel">Subject</label>
+                    <input type="text" id="subject" name="subject" required data-lang-key="formSubjectPlaceholder" placeholder="Subject">
+                </div>
+                <div class="form-group">
+                    <label for="message" data-lang-key="formMessageLabel">Message</label>
+                    <textarea id="message" name="message" rows="5" required data-lang-key="formMessagePlaceholder" placeholder="Your Message"></textarea>
+                </div>
+                 <!-- Champ caché pour la langue (optionnel, Formspree le détecte souvent) -->
+                 <input type="hidden" name="_language" value="en"> 
+                 <!-- === MODIFICATION ICI: Texte retiré du bouton === -->
+                <button type="submit" class="btn" data-lang-key="formSubmitButton"></button>
+                <!-- ============================================= -->
+            </form>
+            <p id="form-status"></p> <!-- Pour afficher les messages de succès/erreur -->
+            <!-- ========================== -->
+
+        </section>
+    </main>
+
+    <!-- 6. FOOTER -->
+    <footer>
+        <p data-lang-key="footerText">&copy; 2025 Lilian Benard. All rights reserved.</p>
+    </footer>
+
+    <!-- 7. MODAL (POP-UP) POUR LES DÉTAILS DU PROJET -->
+    <div id="project-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title" data-lang-key="modalDefaultTitle">Project Title</h2>
+            
+            <!-- Conteneur pour vidéo YouTube/Vimeo -->
+            <div id="modal-video-container">
+                <!-- L'iframe sera inséré ici par JS -->
+            </div>
+
+            <p id="modal-pitch" data-lang-key="modalDefaultPitch">Game pitch.</p>
+
+            <div id="modal-info" data-lang-key="modalDefaultInfo">
+                <!-- Key info (Engine, Language...) inserted by JS -->
+            </div>
+            
+            <h3 data-lang-key="modalContribTitle">My Contribution</h3>
+            <ul id="modal-contribution-list">
+                <!-- Liste des contributions insérée par JS -->
+            </ul>
+
+            <!-- === MODIFICATION ICI === -->
+            <h3 data-lang-key="modalChallengesTitle">Challenges Faced</h3>
+            <ul id="modal-challenges-list">
+                <!-- Liste des défis insérée par JS -->
+            </ul>
+            <!-- ====================== -->
+
+            <div id="modal-links">
+                <!-- Liens (itch.io, GitHub) insérés par JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Liaison vers le fichier JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
+

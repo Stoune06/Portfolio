@@ -1,0 +1,1220 @@
+/* --- VARIABLES GLOBALES ET RESET --- */
+:root {
+    /* === Palette "tempête de sable" (thème sombre par défaut) === */
+    --primary-color: #D77A47;
+    --primary-color-hover: #C26934;
+    --accent-color: #3F6868;
+    --dark-color: #F5E8D5; /* Titres */
+    --text-color: #E9D9BF; /* Texte principal */
+    --muted-text: #B79A7A;
+    --white-color: #1F1A14; /* Fond général */
+    --light-color: #2D241D; /* Blocs de section */
+    --surface-card: #2E241C;
+    --surface-card-alt: #3A2C22;
+    --divider-color: rgba(245, 232, 213, 0.16);
+    --header-bg: #3B2F26;
+    --header-border: rgba(253, 247, 236, 0.28);
+    --header-text: #FDF7EC;
+    --icon-color: #E9D9BF;
+    --storm-particle-color: rgba(217, 170, 102, 0.32);
+    /* --- Formulaire --- */
+    --form-input-bg: #2D241D;
+    --form-input-border: rgba(245, 232, 213, 0.2);
+    --form-input-text: #F5E8D5;
+    --form-label-color: var(--muted-text);
+    /* --- Couleurs de statut --- */
+    --success-color: #10B981;
+    --error-color: #EF4444;
+    /* --- Transition --- */
+    --theme-transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    /* --- Couleurs des Tags --- */
+    --tag-godot-bg: #8B6639;
+    --tag-godot-color: #F5E8D5;
+    --tag-unity-bg: #4E5D51;
+    --tag-unity-color: #F5E8D5;
+    --tag-csharp-bg: #82556F;
+    --tag-csharp-color: #F5E8D5;
+    --tag-puzzle-bg: #5E765D;
+    --tag-puzzle-color: #F5E8D5;
+    --tag-visualnovel-bg: #AE7C43;
+    --tag-visualnovel-color: #1F1A14;
+    --tag-tools-bg: #6C5F53;
+    --tag-tools-color: #F5E8D5;
+    --header-height: 70px;
+}
+
+/* === VARIABLES MODE CLAIR (Tour d'Aurore) === */
+:root[data-theme="light"] {
+    --primary-color: #E4924F;
+    --primary-color-hover: #D37736;
+    --accent-color: #4E8888;
+    --dark-color: #2C2621;
+    --text-color: #3F352C;
+    --muted-text: #6B5A47;
+    --white-color: #FAF1DB;
+    --light-color: #F1DFBF;
+    --surface-card: #F7E6C6;
+    --surface-card-alt: #E5CBA1;
+    --divider-color: rgba(44, 38, 33, 0.14);
+    --header-bg: #FFF5E1;
+    --header-border: rgba(44, 38, 33, 0.12);
+    --header-text: #2C2621;
+    --icon-color: #3F352C;
+    --storm-particle-color: rgba(199, 154, 82, 0.28);
+    /* --- FORMULAIRE --- */
+    --form-input-bg: #FFFFFF;
+    --form-input-border: rgba(44, 38, 33, 0.2);
+    --form-input-text: var(--text-color);
+    --form-label-color: var(--muted-text);
+    /* --- Couleurs des Tags --- */
+    --tag-godot-bg: #D5B681;
+    --tag-godot-color: #2C2621;
+    --tag-unity-bg: #C2C6BA;
+    --tag-unity-color: #2C2621;
+    --tag-csharp-bg: #D0A4C9;
+    --tag-csharp-color: #2C1426;
+    --tag-puzzle-bg: #9FC7A7;
+    --tag-puzzle-color: #1F3A29;
+    --tag-visualnovel-bg: #E4BC76;
+    --tag-visualnovel-color: #3F2A16;
+    --tag-tools-bg: #B8B2A8;
+    --tag-tools-color: #26211C;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--header-height); /* Ajustez si nécessaire */
+}
+
+body {
+    font-family: 'Source Sans 3', sans-serif;
+    line-height: 1.7;
+    color: var(--text-color);
+    background: var(--white-color);
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    color: var(--dark-color); /* S'adapte (maintenant clair par défaut) */
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+h2 {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+p {
+    margin-bottom: 1.25rem;
+    transition: color 0.3s ease; /* Transition pour couleur texte */
+    /* La taille par défaut sera 1rem (implicite) */
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary-color-hover);
+}
+
+ul {
+    list-style: none;
+}
+
+.container {
+    padding: 0 2rem; /* Garde une marge sur les côtés */
+}
+
+
+section {
+    padding: 5rem 0;
+    transition: var(--theme-transition); /* Ajout transition aux sections */
+}
+
+/* === STYLE DU CANVAS D'ÉTOILES === */
+#starfield {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* === MODIFICATION ICI === */
+    z-index: 1; /* Devant la vidéo (-2) et l'overlay (-1), mais derrière le contenu (2) */
+    /* ======================== */
+    pointer-events: none; /* Ne pas intercepter les clics */
+}
+
+
+/* --- BOUTONS ET TAGS --- */
+.btn {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #FFFFFF; /* TOUJOURS BLANC */
+    padding: 0.85rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(215, 122, 71, 0.25);
+    position: relative; /* Pour le spinner */
+    overflow: hidden; /* Pour contenir le spinner */
+}
+
+.btn:hover:not(.loading):not(.success):not(.error) { /* Désactiver hover sur états spéciaux */
+    background: var(--primary-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(215, 122, 71, 0.35);
+}
+
+/* --- États du bouton --- */
+.btn.loading, .btn.success, .btn.error {
+    cursor: default;
+    pointer-events: none; /* Empêche les clics multiples */
+}
+
+.btn.loading span:not(.spinner) { /* Cache le texte original (span ajouté en JS) */
+    visibility: hidden;
+    opacity: 0;
+}
+
+.btn.success {
+    background-color: var(--success-color);
+}
+.btn.success:hover {
+    background-color: var(--success-color); /* Empêche le hover */
+     transform: none;
+     box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+}
+
+.btn.error {
+    background-color: var(--error-color);
+}
+.btn.error:hover {
+    background-color: var(--error-color);
+     transform: none;
+     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+}
+
+/* --- Spinner --- */
+.spinner {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top: 3px solid #fff;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -10px; /* Moitié de la hauteur */
+    margin-left: -10px; /* Moitié de la largeur */
+    display: none; /* Caché par défaut */
+}
+
+.btn.loading .spinner {
+    display: block; /* Affiché pendant le chargement */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+.tag {
+    display: inline-block;
+    background: var(--tag-bg); /* Couleur par défaut */
+    color: var(--tag-color); /* Couleur par défaut */
+    padding: 0.35rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid rgba(44, 38, 33, 0.15);
+    text-transform: uppercase;
+    letter-spacing: 0.08rem;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+/* === COULEURS SPÉCIFIQUES POUR LES TAGS === */
+.tag.godot {
+    background-color: var(--tag-godot-bg);
+    color: var(--tag-godot-color);
+}
+.tag.unity {
+    background-color: var(--tag-unity-bg);
+    color: var(--tag-unity-color);
+}
+.tag.csharp {
+    background-color: var(--tag-csharp-bg);
+    color: var(--tag-csharp-color);
+}
+.tag.puzzle, .tag.sokoban { /* Regrouper les similaires */
+    background-color: var(--tag-puzzle-bg);
+    color: var(--tag-puzzle-color);
+}
+.tag.visual-novel {
+    background-color: var(--tag-visualnovel-bg);
+    color: var(--tag-visualnovel-color);
+}
+.tag.tools {
+    background-color: var(--tag-tools-bg);
+    color: var(--tag-tools-color);
+}
+/* Ajoutez d'autres règles ici pour d'autres tags */
+/* ======================================== */
+
+/* --- 1. HEADER / NAVIGATION (LIQUID GLASS OVAL) --- */
+header {
+    background: var(--header-bg);
+    box-shadow: 0 10px 25px rgba(18, 14, 11, 0.45);
+    position: fixed;
+    top: 1rem; /* Espace par rapport au haut */
+    left: 50%; /* Commence au centre */
+    transform: translateX(-50%); /* Ajustement précis du centrage */
+    width: 90%; /* Largeur de la navbar */
+    max-width: 1100px; /* Largeur maximale */
+    z-index: 1000;
+    transition: top 0.3s ease-in-out, opacity 0.3s ease-in-out, background-color 0.3s ease, box-shadow 0.3s ease; /* Ajout transition background/shadow */
+    border-radius: 32px;
+    border: 1px solid var(--header-border);
+    opacity: 1; /* Navbar visible par défaut */
+}
+
+/* Styles pour le mode clair */
+:root[data-theme="light"] header {
+    box-shadow: 0 12px 30px rgba(122, 98, 78, 0.26);
+}
+
+/* Classe pour cacher le header */
+header.header-hidden {
+    top: -100px; /* Cache le header en le déplaçant vers le haut (ajuster si hauteur change) */
+    opacity: 0; /* Rend invisible pendant la transition */
+}
+
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--header-height); /* Hauteur fixe sur desktop */
+    padding: 0 1.5rem; /* Padding intérieur de la navbar ovale */
+}
+
+/* === STRUCTURE NAV === */
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--header-text);
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+header ul {
+    display: flex;
+    margin: 0; /* Reset margin */
+}
+
+header ul li {
+    margin-left: 2rem;
+}
+
+header ul li a {
+    color: var(--header-text);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+}
+
+::root[data-theme="light"] header ul li a {
+    color: var(--primary-color);
+}
+
+::root[data-theme="light"] header .logo {
+    color: var(--primary-color);
+}
+
+header ul li a:hover {
+    color: var(--primary-color);
+}
+
+/* --- BOUTON DE LANGUE --- */
+#lang-toggle {
+    background: var(--primary-color);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 0.75rem;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 1.5rem; /* Espace entre le bouton et le logo */
+    font-size: 0.9rem;
+}
+
+#lang-toggle:hover {
+    background: var(--primary-color-hover);
+}
+
+/* --- BOUTON THÈME (ICÔNE) --- */
+.theme-toggle-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 1rem; /* Espace par rapport aux liens de nav */
+    display: flex; /* Pour centrer l'icône si besoin */
+    align-items: center;
+    justify-content: center;
+    color: var(--header-text);
+    transition: color 0.3s ease; /* Ajout transition */
+}
+
+.theme-toggle-button:hover {
+    color: var(--primary-color);
+}
+
+.theme-toggle-button svg {
+    width: 24px; /* Taille de l'icône */
+    height: 24px;
+    stroke: currentColor; /* L'icône prend la couleur du bouton */
+    transition: stroke 0.3s ease; /* Ajout transition */
+}
+
+::root[data-theme="light"] .theme-toggle-button {
+    color: var(--header-text);
+}
+
+/* --- 2. SECTION HÉROS (AVEC VIDÉO FIXE) --- */
+#hero {
+    height: 100vh;
+    position: relative;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#hero-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -2;
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(20, 15, 11, 0.62);
+    z-index: -1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1; /* Devant le canvas d'étoiles (z-index 0) */
+    color: var(--white-color);
+    padding-top: var(--header-height); /* Garde l'espace pour la navbar */
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+#hero h1 {
+    font-size: 3.8rem;
+    color: #FFFFFF; /* Reste blanc */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
+    letter-spacing: 0.08em;
+}
+
+#hero h2 {
+    font-size: 2rem;
+    color: var(--primary-color); /* Reste couleur primaire */
+    margin-bottom: 1.5rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    color: #FFFFFF; /* Reste blanc */
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+#hero .social-links {
+    margin-top: 2rem;
+}
+
+#hero .social-links a {
+    margin: 0 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FDF7EC; /* Reste blanc chaud */
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+#hero .social-links a:hover {
+    color: var(--primary-color);
+}
+
+
+/* --- 3. SECTION À PROPOS --- */
+#about {
+    background: var(--light-color);
+    border-top: 4px solid var(--divider-color);
+    border-bottom: 4px solid var(--divider-color);
+    position: relative;
+    z-index: 2;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+    align-items: flex-start;
+}
+
+.about-text {
+    text-align: center;
+    max-width: 800px; /* Limite la largeur du texte */
+    margin: 0 auto; /* Centre le bloc de texte */
+}
+
+.about-highlight {
+    margin: 2rem auto;
+    padding: 1.5rem 2rem;
+    background: rgba(245, 232, 213, 0.08);
+    border: 1px solid rgba(245, 232, 213, 0.18);
+    border-radius: 16px;
+    position: relative;
+    line-height: 1.8;
+    color: var(--text-color);
+    box-shadow: 0 18px 30px rgba(18, 14, 11, 0.25);
+}
+
+.about-highlight::before {
+    content: "";
+    position: absolute;
+    top: -14px;
+    left: 32px;
+    width: 48px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 999px;
+}
+
+.about-highlight p {
+    margin: 0;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.05rem;
+    text-align: left;
+    line-height: 1.9;
+}
+
+.about-highlight p + p {
+    margin-top: 1.5rem;
+}
+
+.about-text p {
+    font-size: 1.1rem; /* Taille de police augmentée */
+    text-align: left; /* Garder le texte aligné à gauche pour la lisibilité */
+}
+
+
+.about-skills h3 {
+    font-size: 1.5rem;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-skills h4 {
+    font-size: 1.1rem;
+    color: var(--dark-color); /* S'adapte (clair par défaut) */
+    margin-top: 1rem;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+.about-skills ul li {
+    background: rgba(44, 38, 33, 0.08);
+    border-color: rgba(44, 38, 33, 0.18);
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    color: var(--text-color); 
+    border: 1px solid;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+:root[data-theme="light"] .about-skills ul li {
+    background: rgba(247, 233, 212, 0.65);
+    border-color: rgba(44, 38, 33, 0.12);
+    color: var(--text-color); /* #374151 */
+}
+
+
+/* --- 4. SECTION PROJETS --- */
+#projects {
+    background: var(--surface-card);
+    border-bottom: 4px solid var(--divider-color);
+    position: relative;
+    z-index: 2;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+.project-filters {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    align-items: flex-start;
+}
+
+.project-filters__label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.12rem;
+    text-transform: uppercase;
+    color: var(--muted-text);
+}
+
+.project-filters__buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.filter-btn {
+    border: 1px solid var(--divider-color);
+    background: transparent;
+    color: var(--text-color);
+    padding: 0.55rem 1.15rem;
+    border-radius: 999px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.08rem;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.filter-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #1F1A14;
+}
+
+::root[data-theme="light"] .filter-btn.active {
+    color: #FFFFFF;
+}
+
+/* === STYLES POUR L'EFFET DE FLIP === */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 320px));
+    justify-content: center;
+    gap: 2rem;
+}
+
+/* === STYLES POUR L'EFFET DE FLIP === */
+.project-card {
+    background: transparent; /* Le fond sera géré par les faces */
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none; 
+    cursor: pointer;
+    height: 360px;
+    perspective: 1000px; 
+    position: relative;
+    max-width: 320px;
+    width: 100%;
+}
+
+.project-card::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 72px;
+    height: 12px;
+    background: var(--primary-color);
+    clip-path: polygon(0 100%, 10% 0, 90% 0, 100% 100%);
+    box-shadow: 0 6px 12px rgba(44, 38, 33, 0.2);
+    z-index: 2;
+}
+
+.project-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s;
+    transform-style: preserve-3d; 
+    border-radius: 12px; 
+    box-shadow: 0 12px 24px rgba(18, 14, 11, 0.35);
+    background: var(--surface-card);
+}
+
+.project-card:hover .project-card-inner {
+    transform: rotateY(180deg);
+}
+
+.project-card-front,
+.project-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden; 
+    backface-visibility: hidden;
+    border-radius: 12px;
+    display: flex; 
+    flex-direction: column;
+    align-items: center; /* Conserve le centrage horizontal */
+    padding: 1.5rem;
+    overflow: hidden; 
+    transition: var(--theme-transition); 
+}
+
+.project-card-front {
+    background: var(--surface-card);
+    border: 1px solid rgba(245, 232, 213, 0.12);
+    justify-content: flex-start; /* Aligne le contenu en haut */
+}
+:root[data-theme="light"] .project-card-front {
+    border-color: rgba(44, 38, 33, 0.1);
+}
+
+.project-card-front img {
+    height: 150px; 
+    margin-bottom: 1rem;
+    width: 100%; /* Prend toute la largeur de la carte */
+    object-fit: cover; /* Recadre l'image */
+    position: relative; 
+    z-index: 1;
+    border-radius: 8px; /* Coins arrondis pour l'image */
+}
+
+.project-card-front .project-card-content {
+    padding: 0; 
+    position: relative;
+    z-index: 3; 
+    color: var(--dark-color); 
+    text-shadow: none; 
+    width: 100%; 
+    text-align: center;
+}
+:root[data-theme="light"] .project-card-front .project-card-content {
+    color: var(--text-color); 
+}
+
+
+.project-card-front .project-card-content h3,
+.project-card-front .project-card-content p {
+    color: inherit; /* Hérite de la couleur définie ci-dessus */
+}
+
+
+.project-card-back {
+    background: var(--surface-card-alt);
+    transform: rotateY(180deg); /* Initialement retournée */
+    border: 1px solid rgba(245, 232, 213, 0.22);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.project-card-back .back-title {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.project-card-back .back-subtitle {
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+.project-card-back .back-tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.project-card-back .tag {
+    margin: 0; /* Réinitialise la marge des tags pour la face arrière */
+    background: transparent;
+    color: inherit;
+    border-color: rgba(245, 232, 213, 0.3);
+}
+
+.project-card-back .btn-project-back {
+    display: inline-block;
+    background: var(--primary-color);
+    color: #FFFFFF;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(62, 107, 107, 0.22);
+    margin-top: auto; /* Pousse le bouton vers le bas */
+    margin-bottom: 1rem; /* Ajoute un peu d'espace en bas */
+}
+
+.project-card-back .btn-project-back:hover {
+    background: var(--primary-color-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(62, 107, 107, 0.3);
+}
+
+
+.project-card:hover {
+    transform: none; 
+    box-shadow: none; 
+}
+
+.project-card img {
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.project-card h3 {
+    font-size: 1.4rem;
+    color: var(--dark-color); 
+    transition: color 0.3s ease;
+}
+
+.project-card .project-context {
+    font-size: 0.9rem;
+    color: var(--muted-text);
+    margin-bottom: 1rem;
+    font-style: italic;
+    transition: color 0.3s ease;
+}
+:root[data-theme="light"] .project-card .project-context {
+    color: var(--muted-text);
+}
+
+.project-card .project-tags {
+    margin-bottom: 0; 
+    margin-top: 1rem; 
+    min-height: auto; 
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
+/* --- 5. SECTION CONTACT --- */
+#contact {
+    background: var(--light-color);
+    border-top: 4px solid var(--divider-color);
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+#contact p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* === STYLES FORMULAIRE DE CONTACT === */
+#contact-form {
+    max-width: 600px; /* Limite la largeur du formulaire */
+    margin: 2rem auto 0 auto; /* Centre le formulaire */
+    text-align: left; /* Aligne labels à gauche */
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+    color: var(--form-label-color); /* Utilise la variable de thème */
+    transition: color 0.3s ease; /* Ajout transition */
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--form-input-border);
+    background-color: var(--form-input-bg);
+    color: var(--form-input-text);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease; /* Ajout transition */
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(67, 56, 202, 0.2); /* Ajoute un halo au focus */
+}
+
+.form-group textarea {
+    resize: vertical; /* Permet de redimensionner verticalement */
+}
+
+#contact-form button[type="submit"] {
+    display: block; /* Prend toute la largeur */
+    width: 100%;
+    margin-top: 1rem;
+    position: relative; /* Pour le spinner */
+    overflow: hidden; /* Pour contenir le spinner */
+    min-height: 50px; /* Hauteur minimale pour voir le spinner */
+    transition: background-color 0.3s ease; /* Transition pour états success/error */
+}
+
+#form-status {
+    display: none; 
+}
+
+/* ================================ */
+
+
+/* --- 6. FOOTER --- */
+footer {
+    background: var(--light-color); /* Utilise la variable --light-color du thème actuel */
+    color: var(--text-color); /* Utilise la variable --text-color du thème actuel */
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 2.5rem 0;
+    font-size: 0.9rem;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+
+/* --- 7. MODAL (POP-UP) --- */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(44, 38, 33, 0.8);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.modal-content {
+    background-color: var(--surface-card);
+    margin: 8% auto;
+    padding: 2.5rem 3rem;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 25px 40px rgba(18, 14, 11, 0.5);
+    animation: slideDown 0.3s ease-out;
+    transition: background-color 0.3s ease; /* Ajout transition */
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+    color: #9CA3AF;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: var(--dark-color); /* S'adapte (clair par défaut) */
+}
+
+#modal-video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    border-radius: 8px;
+}
+
+#modal-video-container iframe,
+#modal-video-container video { /* Ajout video ici */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* Appliquer aussi sur video */
+}
+
+
+#modal-pitch {
+    font-size: 1.1rem;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    color: #D1D5DB; /* Sombre par défaut */
+    transition: color 0.3s ease; /* Ajout transition */
+}
+:root[data-theme="light"] #modal-pitch {
+    color: #4B5563;
+}
+
+#modal-info {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+    background: var(--surface-card-alt);
+    padding: 1rem;
+    border-radius: 8px;
+    transition: var(--theme-transition); /* Ajout transition */
+}
+:root[data-theme="light"] #modal-info {
+    color: var(--muted-text);
+}
+
+
+#modal-info strong { 
+    margin-right: 0.5rem; 
+    color: var(--dark-color); /* S'adapte (clair par défaut) */
+    transition: color 0.3s ease; /* Ajout transition */
+}
+#modal-info span { margin-right: 1.5rem; }
+
+#modal-contribution-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 2rem;
+}
+
+/* === NOUVEAU STYLE POUR LISTE DÉFIS === */
+#modal-challenges-list {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 2rem;
+}
+
+#modal-contribution-list li,
+#modal-challenges-list li { /* Partage le style */
+    margin-bottom: 0.75rem;
+}
+
+#modal-contribution-list li::marker,
+#modal-challenges-list li::marker { /* Partage le style */
+    color: var(--primary-color);
+}
+
+#modal-links a {
+    margin-right: 1rem;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    header {
+        height: auto;
+        width: 95%; 
+        top: 0.5rem; 
+    }
+    header .container {
+        flex-direction: column;
+        height: auto;
+        padding: 0.75rem 1rem; 
+    }
+    
+    .nav-left {
+        width: 100%;
+        justify-content: space-between;
+    }
+    .nav-right {
+        width: 100%;
+        flex-direction: column;
+        margin-top: 1rem; 
+    }
+
+    header ul {
+        margin-top: 0; 
+        flex-wrap: wrap;
+        justify-content: center;
+        width: 100%;
+        margin-right: 0; 
+        padding-left: 0; 
+    }
+
+    header ul li {
+        margin: 0.5rem 1rem;
+    }
+
+    .theme-toggle-button {
+        margin-top: 1rem;
+        margin-left: 0; 
+    }
+
+    #hero h1 {
+        font-size: 2.8rem;
+    }
+
+    #hero h2 {
+        font-size: 1.5rem;
+    }
+
+    #hero p {
+        font-size: 1rem;
+    }
+
+    .about-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .about-text {
+        max-width: 100%; /* Pleine largeur sur mobile */
+    }
+
+
+    .about-skills {
+        padding-top: 2rem;
+        border-top: 1px solid var(--text-color);
+        transition: border-color 0.3s ease; /* Ajout transition */
+    }
+
+    h2 {
+        font-size: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .modal-content {
+        width: 95%;
+        margin: 5% auto;
+        padding: 1.5rem;
+    }
+
+    #modal-info span {
+        display: block;
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .project-card {
+        height: 360px; /* Conserver hauteur fixe si flip mobile */
+        perspective: 1000px; 
+    }
+
+    .project-filters {
+        align-items: stretch;
+    }
+
+    .project-card-front, .project-card-back {
+        position: absolute; 
+        /* transform: none !important; */ /* Retiré pour permettre le flip */
+        backface-visibility: hidden !important; 
+        height: 100%; 
+        padding: 1.5rem; 
+    }
+    .project-card-back {
+         transform: rotateY(180deg) !important; 
+        margin-top: 0; 
+        border-top: none; 
+        background: var(--light-color); 
+        border: 1px solid var(--primary-color); 
+    }
+
+
+    .project-card .project-card-inner {
+       transform-style: preserve-3d; 
+       transition: transform 0.6s; 
+       box-shadow: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.07); 
+       height: 100%; /* S'assurer que l'inner prend la hauteur de .project-card */
+    }
+
+    .project-card-back .btn-project-back {
+        margin-top: 1rem;
+    }
+
+    .project-card-back .back-title {
+        font-size: 1.4rem;
+    }
+
+    .project-card-back .back-subtitle {
+        font-size: 1rem;
+    }
+
+    /* Ajustement formulaire mobile */
+    #contact-form {
+        max-width: 100%; /* Pleine largeur sur mobile */
+    }
+}
+
